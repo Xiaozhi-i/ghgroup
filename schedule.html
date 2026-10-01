@@ -48,21 +48,12 @@
 
         /* 4. 内容区防遮挡 */
         main { 
-            padding: 120px 20px 40px; 
+            padding: 100px 20px 40px; /* 移除提示后，顶部间距稍微减小 */
             max-width: 900px; 
             margin: auto; 
         }
 
-        /* 5. 测试提示卡片 */
-        .test-notice {
-            text-align: center; padding: 20px; margin-bottom: 25px;
-            font-family: 'FZHei', sans-serif; font-size: 15px; color: #16375D;
-            background: rgba(255, 255, 255, 0.4); border-radius: 16px;
-            border: 1px dashed rgba(22, 55, 93, 0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        /* 6. 玻璃卡片 —— 弹力力学 cubic‑bezier(0.175, 0.885, 0.32, 1.275) */
+        /* 5. 玻璃卡片 */
         .glass-card {
             position: relative;
             background: rgba(255, 255, 255, 0.15); 
@@ -82,20 +73,19 @@
             background: rgba(255, 255, 255, 0.35); 
             transform: translateY(-5px); 
         }
-        /* 完美回弹的按压动画 */
         .glass-card:active { 
             transform: scale(0.96);
             transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* 7. 智能仪表盘（卡片1）完美居中 */
+        /* 6. 智能仪表盘 */
         .status-card { 
             text-align: center; 
-            padding: 70px 30px; 
+            padding: 50px 30px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            height: auto; /* 去掉硬性高宽限制，自动适应内容 */
+            height: auto; 
         }
         
         #s-content-wrapper {
@@ -117,15 +107,33 @@
         }
 
         .status-time { font-family: 'FZHei', sans-serif; font-size: 15px; color: #16375D; opacity: 0.7; margin-bottom: 5px; }
-        .status-title { font-family: 'MengyuanSong', serif; font-size: 34px; color: #16375D; margin-bottom: 10px; transition: color 0.3s; }
-        .status-teacher { font-family: 'FZShuSong', serif; font-size: 16px; color: #444; margin-bottom: 15px; min-height: 20px; }
+        
+        /* 关键修复：增加 white-space: pre-line 使 \n 生效 */
+        .status-title { 
+            font-family: 'MengyuanSong', serif; 
+            font-size: 30px; 
+            color: #16375D; 
+            margin-bottom: 10px; 
+            transition: color 0.3s;
+            white-space: pre-line; /* 允许换行 */
+            line-height: 1.4;
+        }
+        .status-teacher { 
+            font-family: 'FZShuSong', serif; 
+            font-size: 16px; 
+            color: #444; 
+            margin-bottom: 15px; 
+            min-height: 20px;
+            white-space: pre-line; /* 允许换行 */
+            line-height: 1.5;
+        }
         
         .status-details { display: flex; gap: 16px; margin-bottom: 15px; justify-content: center; flex-wrap: wrap; }
         .detail-tag { background: rgba(22, 55, 93, 0.08); padding: 6px 16px; border-radius: 20px; font-family: 'FZHei', sans-serif; font-size: 14px; color: #16375D; transition: opacity 0.3s; }
         .progress-wrap { width: 100%; max-width: 300px; height: 5px; background: rgba(0,0,0,0.05); border-radius: 3px; margin-top: 5px; overflow: hidden; }
         .progress-fill { height: 100%; background: #16375D; width: 0%; transition: width 1s linear; border-radius: 3px; }
 
-        /* 8. 课表与大时钟（卡片2）自适应撑开 + 垂直居中 */
+        /* 7. 课表与大时钟 */
         .card2-wrapper { 
             min-height: 250px; 
             height: auto; 
@@ -143,7 +151,6 @@
             padding: 0 20px;
             box-sizing: border-box;
             overflow: hidden;
-            /* 使用 max-height + Flex 彻底解决撑不开与不居中的问题 */
             transition: opacity 0.35s ease, max-height 0.35s ease, transform 0.35s ease, padding 0.35s ease;
             display: flex;
             flex-direction: column;
@@ -192,7 +199,6 @@
         .table-scroll-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.25); border-radius: 3px; }
         .table-scroll-container::-webkit-scrollbar-thumb { background: rgba(22, 55, 93, 0.35); border-radius: 3px; }
         
-        /* 修复列宽：使用 colgroup 强制对齐 */
         .schedule-table { 
             min-width: 700px; 
             width: 100%; 
@@ -218,7 +224,17 @@
         .big-clock-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding:24px 0; }
         .big-clock-label { font-family: 'FZHei', sans-serif; font-size: 18px; color: #16375D; opacity: 0.8; margin-bottom: 5px; }
         .big-clock-time { font-family: 'XITS', serif; font-weight: bold; font-size: 60px; color: #16375D; letter-spacing: 2px; line-height: 1.1; font-variant-numeric: tabular-nums; text-align: center; }
-        .big-clock-sub { font-family: 'FZShuSong', serif; font-size: 18px; color: #666; margin-top: 8px; }
+        
+        /* 关键修复：增加 white-space: pre-line 使大时钟副标题换行生效 */
+        .big-clock-sub { 
+            font-family: 'FZShuSong', serif; 
+            font-size: 16px; 
+            color: #666; 
+            margin-top: 8px; 
+            text-align: center;
+            white-space: pre-line;
+            line-height: 1.5;
+        }
 
         footer { text-align: center; padding: 30px; font-size: 14px; color: #000; backdrop-filter: blur(10px); background: rgba(255,255,255,0.2); border-radius: 24px; margin-bottom: 20px;}
     </style>
@@ -233,9 +249,7 @@
     </header>
     
     <main>
-        <div class="test-notice">
-            💡 提示：本页面数据仅供测试，后续将接入真实课表与教师安排
-        </div>
+        <!-- 提示已删除 -->
 
         <!-- 卡片1：智能仪表盘 -->
         <div class="glass-card status-card" id="card1">
@@ -260,12 +274,13 @@
                     <table class="schedule-table">
                         <colgroup>
                             <col style="width: 90px;">
-                            <col style="width: calc((100% - 90px) / 6);">
-                            <col style="width: calc((100% - 90px) / 6);">
-                            <col style="width: calc((100% - 90px) / 6);">
-                            <col style="width: calc((100% - 90px) / 6);">
-                            <col style="width: calc((100% - 90px) / 6);">
-                            <col style="width: calc((100% - 90px) / 6);">
+                            <col style="width: calc((100% - 90px) / 7);">
+                            <col style="width: calc((100% - 90px) / 7);">
+                            <col style="width: calc((100% - 90px) / 7);">
+                            <col style="width: calc((100% - 90px) / 7);">
+                            <col style="width: calc((100% - 90px) / 7);">
+                            <col style="width: calc((100% - 90px) / 7);">
+                            <col style="width: calc((100% - 90px) / 7);">
                         </colgroup>
                         <thead>
                             <tr>
@@ -275,6 +290,7 @@
                                 <th>星期三</th>
                                 <th>星期四</th>
                                 <th>星期五</th>
+                                <th>星期六</th>
                                 <th>星期日</th>
                             </tr>
                         </thead>
@@ -310,7 +326,7 @@
             });
 
             const normalSlots = [
-                { id:'morning', name:'早读', start:'07:40', end:'08:05' },
+                { id:'morning', name:'早读', start:'07:30', end:'08:05' },
                 { id:'c1', name:'第一节', start:'08:10', end:'08:50' },
                 { id:'c2', name:'第二节', start:'09:00', end:'09:40' },
                 { id:'big_break', name:'大课间', start:'09:40', end:'10:10' },
@@ -327,7 +343,7 @@
             ];
 
             const fridaySlots = [
-                { id:'morning', name:'早读', start:'07:40', end:'08:05' },
+                { id:'morning', name:'早读', start:'07:30', end:'08:05' },
                 { id:'c1', name:'第一节', start:'08:10', end:'08:50' },
                 { id:'c2', name:'第二节', start:'09:00', end:'09:40' },
                 { id:'big_break', name:'大课间', start:'09:40', end:'10:10' },
@@ -337,6 +353,23 @@
                 { id:'c6', name:'第六节', start:'13:50', end:'14:30' },
                 { id:'c7', name:'第七节', start:'14:40', end:'15:20' },
                 { id:'activity', name:'第八节', start:'15:30', end:'16:10' },
+                { id:'dinner', name:'晚餐', start:'17:00', end:'18:00' },
+                { id:'e1', name:'晚自习(1)', start:'18:00', end:'18:40' },
+                { id:'e2', name:'晚自习(2)', start:'18:50', end:'19:30' },
+                { id:'e3', name:'晚自习(3)', start:'19:40', end:'20:20' }
+            ];
+
+            const saturdaySlots = [
+                { id:'morning', name:'早读', start:'07:30', end:'08:05' }, 
+                { id:'c1', name:'第一节', start:'08:10', end:'08:50' },
+                { id:'c2', name:'第二节', start:'09:00', end:'09:40' },
+                { id:'big_break', name:'大课间', start:'09:40', end:'10:10' },
+                { id:'c3', name:'第三节', start:'10:10', end:'10:50' },
+                { id:'c4', name:'第四节', start:'11:00', end:'11:40' },
+                { id:'c5', name:'第五节', start:'13:50', end:'14:30' },
+                { id:'c6', name:'第六节', start:'14:40', end:'15:20' },
+                { id:'c7', name:'第七节', start:'15:30', end:'16:10' },
+                { id:'activity', name:'第八节', start:'16:20', end:'17:00' },
                 { id:'dinner', name:'晚餐', start:'17:00', end:'18:00' },
                 { id:'e1', name:'晚自习(1)', start:'18:00', end:'18:40' },
                 { id:'e2', name:'晚自习(2)', start:'18:50', end:'19:30' },
@@ -353,16 +386,27 @@
                 { id:'e3', name:'晚自习(3)', start:'19:40', end:'20:20' }
             ];
 
+            const teacherMap = {
+                '语文': '谭立', '数学': '陈勇', '英语': '李清艳', '政治': '易溶',
+                '历史': '陈艳娥', '物理': '曾勇军', '化学': '郭映雪', '体育': '李佳浩',
+                '班会': '李清艳', '劳动': ''
+            };
+
             const scheduleData = {
-                1: [ { slot:'morning', sub:'语文' }, { slot:'c1', sub:'数学' }, { slot:'c2', sub:'语文' }, { slot:'c3', sub:'化学' }, { slot:'c4', sub:'英语' }, { slot:'c5', sub:'世界历史' }, { slot:'c6', sub:'体育与健康' }, { slot:'c7', sub:'道德与法治' }, { slot:'activity', sub:'自习' }, { slot:'e1', sub:'英语' }, { slot:'e2', sub:'数学' }, { slot:'e3', sub:'语文' } ],
-                2: [ { slot:'morning', sub:'英语' }, { slot:'c1', sub:'英语' }, { slot:'c2', sub:'语文' }, { slot:'c3', sub:'数学' }, { slot:'c4', sub:'物理' }, { slot:'c5', sub:'道德与法治' }, { slot:'c6', sub:'语文' }, { slot:'c7', sub:'化学' }, { slot:'activity', sub:'自习' }, { slot:'e1', sub:'物理' }, { slot:'e2', sub:'化学' }, { slot:'e3', sub:'道德与法治' } ],
-                3: [ { slot:'morning', sub:'语文' }, { slot:'c1', sub:'数学' }, { slot:'c2', sub:'数学' }, { slot:'c3', sub:'英语' }, { slot:'c4', sub:'语文' }, { slot:'c5', sub:'道德与法治' }, { slot:'c6', sub:'物理' }, { slot:'c7', sub:'世界历史' }, { slot:'activity', sub:'自习' }, { slot:'e1', sub:'世界历史' }, { slot:'e2', sub:'语文' }, { slot:'e3', sub:'数学' } ],
-                4: [ { slot:'morning', sub:'英语' }, { slot:'c1', sub:'英语' }, { slot:'c2', sub:'英语' }, { slot:'c3', sub:'语文' }, { slot:'c4', sub:'数学' }, { slot:'c5', sub:'物理' }, { slot:'c6', sub:'世界历史' }, { slot:'c7', sub:'化学' }, { slot:'activity', sub:'自习' }, { slot:'e1', sub:'英语' }, { slot:'e2', sub:'物理' }, { slot:'e3', sub:'化学' } ],
-                5: [ { slot:'morning', sub:'语文' }, { slot:'c1', sub:'数学' }, { slot:'c2', sub:'英语' }, { slot:'c3', sub:'语文' }, { slot:'c4', sub:'语文' }, { slot:'c5', sub:'物理' }, { slot:'c6', sub:'化学' }, { slot:'c7', sub:'体育与健康' }, { slot:'activity', sub:'自习' }, { slot:'e1', sub:'道德与法治' }, { slot:'e2', sub:'世界历史' }, { slot:'e3', sub:'班会' } ],
-                0: [ { slot:'c1', sub:'数学' }, { slot:'c2', sub:'英语' }, { slot:'c3', sub:'物理' }, { slot:'e1', sub:'自习' }, { slot:'e2', sub:'自习' }, { slot:'e3', sub:'自习' } ]
+                1: [ { slot:'morning', sub:'语文' }, { slot:'c1', sub:'数学' }, { slot:'c2', sub:'语文' }, { slot:'c3', sub:'英语' }, { slot:'c4', sub:'体育' }, { slot:'c5', sub:'历史' }, { slot:'c6', sub:'物理' }, { slot:'c7', sub:'数学' }, { slot:'activity', sub:'化学' }, { slot:'e1', sub:'数学' }, { slot:'e2', sub:'历史' }, { slot:'e3', sub:'化学' } ],
+                2: [ { slot:'morning', sub:'英语' }, { slot:'c1', sub:'数学' }, { slot:'c2', sub:'英语' }, { slot:'c3', sub:'语文' }, { slot:'c4', sub:'物理' }, { slot:'c5', sub:'政治' }, { slot:'c6', sub:'化学' }, { slot:'c7', sub:'语文' }, { slot:'activity', sub:'体育' }, { slot:'e1', sub:'政治' }, { slot:'e2', sub:'物理' }, { slot:'e3', sub:'语文' } ],
+                3: [ { slot:'morning', sub:'语文' }, { slot:'c1', sub:'数学' }, { slot:'c2', sub:'数学' }, { slot:'c3', sub:'英语' }, { slot:'c4', sub:'语文' }, { slot:'c5', sub:'历史' }, { slot:'c6', sub:'政治' }, { slot:'c7', sub:'物理' }, { slot:'activity', sub:'劳动' }, { slot:'e1', sub:'数学' }, { slot:'e2', sub:'历史' }, { slot:'e3', sub:'英语' } ],
+                4: [ { slot:'morning', sub:'英语' }, { slot:'c1', sub:'英语' }, { slot:'c2', sub:'英语' }, { slot:'c3', sub:'语文' }, { slot:'c4', sub:'数学' }, { slot:'c5', sub:'化学' }, { slot:'c6', sub:'物理' }, { slot:'c7', sub:'体育' }, { slot:'activity', sub:'英语(听力)' }, { slot:'e1', sub:'物理' }, { slot:'e2', sub:'勇军' }, { slot:'e3', sub:'政治' } ],
+                5: [ { slot:'morning', sub:'语文' }, { slot:'c1', sub:'数学' }, { slot:'c2', sub:'英语' }, { slot:'c3', sub:'语文' }, { slot:'c4', sub:'语文' }, { slot:'c5', sub:'历史' }, { slot:'c6', sub:'政治' }, { slot:'c7', sub:'化学' }, { slot:'activity', sub:'班会' }, { slot:'e1', sub:'数学' }, { slot:'e2', sub:'陈勇' }, { slot:'e3', sub:'化学' } ],
+                6: [ 
+                    { slot:'morning', subA:'英语', subB:'英语' },
+                    { slot:'c1', subA:'英语', subB:'语文' }, { slot:'c2', subA:'化学', subB:'语文' }, { slot:'c3', subA:'数学', subB:'英语' }, { slot:'c4', subA:'数学', subB:'化学' }, { slot:'c5', subA:'政治', subB:'数学' }, { slot:'c6', subA:'物理', subB:'历史' }, { slot:'c7', subA:'语文', subB:'物理' }, { slot:'e1', subA:'自习', subB:'自习' }, { slot:'e2', subA:'自习', subB:'自习' }
+                ],
+                0: [ { slot:'c1', sub:'自习' }, { slot:'c2', sub:'自习' }, { slot:'c3', sub:'自习' }, { slot:'e1', sub:'英语' }, { slot:'e2', sub:'语文' }, { slot:'e3', sub:'清艳' } ]
             };
 
             const getSlotsByDay = (day) => {
+                if (day === 6) return saturdaySlots;
                 if (day === 5) return fridaySlots;
                 if (day === 0) return sundaySlots;
                 return normalSlots;
@@ -376,6 +420,17 @@
                 const lightOff = 21 * 60 + 30;
                 return curMin >= lightOff || curMin < wakeUp;
             };
+
+            function parseCourse(subStr) {
+                if (!subStr) return { name: '', teacher: '' };
+                if (subStr.includes('勇军')) return { name: '自习', teacher: '曾勇军' };
+                if (subStr === '陈勇') return { name: '自习', teacher: '陈勇' };
+                if (subStr === '清艳') return { name: '自习', teacher: '李清艳' };
+                
+                let baseName = subStr.replace(/\(.*?\)/g, '');
+                let teacher = teacherMap[baseName] !== undefined ? teacherMap[baseName] : '';
+                return { name: subStr, teacher: teacher };
+            }
 
             const card1 = document.getElementById('card1');
             const card2 = document.getElementById('card2');
@@ -400,24 +455,33 @@
 
             function renderTable() {
                 let html = '';
-                const daySlots = [1, 2, 3, 4, 5, 0];
+                const daySlots = [1, 2, 3, 4, 5, 6, 0];
                 const currentDay = new Date().getDay();
                 const allSlotIds = ['morning', 'c1', 'c2', 'big_break', 'c3', 'c4', 'c5', 'c6', 'c7', 'activity', 'dinner', 'e1', 'e2', 'e3'];
 
                 allSlotIds.forEach(sid => {
+                    if (currentDay === 0 && !['c1', 'c2', 'c3', 'e1', 'e2', 'e3'].includes(sid)) return;
+
                     let rowData = [];
                     let hasData = false;
+                    
                     daySlots.forEach(day => {
                         let sub = '-';
                         if (scheduleData[day]) {
                             const found = scheduleData[day].find(c => c.slot === sid);
-                            if (found) { sub = found.sub; hasData = true; }
+                            if (found) {
+                                if (day === 6) {
+                                    sub = `${found.subA}(A)<br>${found.subB}(B)`;
+                                } else {
+                                    sub = found.sub;
+                                }
+                                hasData = true;
+                            }
                         }
                         rowData.push(sub);
                     });
 
                     if (!hasData) return;
-                    if (currentDay === 0 && sid !== 'c1' && sid !== 'c2' && sid !== 'c3' && !sid.startsWith('e')) return;
 
                     const slotName = (() => {
                         const findSlots = getSlotsByDay(currentDay);
@@ -433,6 +497,7 @@
                         <td>${rowData[3]}</td>
                         <td>${rowData[4]}</td>
                         <td>${rowData[5]}</td>
+                        <td>${rowData[6]}</td>
                     </tr>`;
                 });
                 tbody.innerHTML = html;
@@ -468,6 +533,7 @@
             }
 
             function updateDOM(title, teacher, elapsedStr, remainStr, pct, showDetails, showProgress) {
+                // 改为 innerText，配合 CSS 的 white-space: pre-line; 实现完美换行
                 els.title.innerText = title;
                 els.teacher.innerText = teacher;
                 els.details.style.opacity = showDetails ? '1' : '0';
@@ -485,7 +551,7 @@
 
                 els.time.innerText = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
-                if (isSleepingTime(curMin) || day === 6 || (day === 0 && !scheduleData[0])) {
+                if (isSleepingTime(curMin) || (day === 0 && !scheduleData[0])) {
                     const sleepText = isSleepingTime(curMin) ? "🌙 正在睡觉" : "今日无课";
                     applyStateUpdate(sleepText, isSleepingTime(curMin) ? "好梦，晚安" : "好好休息", '', '', 0, false, false, sleepText);
                     return;
@@ -500,15 +566,35 @@
                     if (curMin >= start && curMin < end) {
                         let subject = s.name;
                         let teacher = '';
+                        let rawSubject = '';
+                        
                         if (scheduleData[day]) {
                             const c = scheduleData[day].find(c => c.slot === s.id);
-                            if (c) { subject = c.sub; teacher = '授课教师：' + (c.teacher || '任课老师'); }
+                            if (c) {
+                                if (day === 6) {
+                                    const pA = parseCourse(c.subA);
+                                    const pB = parseCourse(c.subB);
+                                    // 使用 \n 换行
+                                    subject = `A课：${pA.name}　　B课：${pB.name}`;
+                                    teacher = `A课：${pA.teacher || '无'}　　B课：${pB.teacher || '无'}`;
+                                    rawSubject = `A:${c.subA},B:${c.subB}`;
+                                } else {
+                                    const parsed = parseCourse(c.sub);
+                                    subject = parsed.name;
+                                    teacher = parsed.teacher ? '授课教师：' + parsed.teacher : '';
+                                    rawSubject = c.sub;
+                                }
+                            } else {
+                                rawSubject = s.name;
+                            }
+                        } else {
+                            rawSubject = s.name;
                         }
 
                         const elapsed = curMin - start;
                         const remain = end - curMin;
                         const pct = Math.min(100, (elapsed / (end - start)) * 100);
-                        const stateId = `${day}-${s.id}-${subject}`;
+                        const stateId = `${day}-${s.id}-${rawSubject}`;
 
                         applyStateUpdate(subject, teacher, `⏳ 已上 ${elapsed} 分钟`, `⏰ 剩余 ${remain} 分钟`, pct, true, true, stateId);
                         found = true;
@@ -523,7 +609,16 @@
                         if (curMin < toMin(s.start)) {
                             if (scheduleData[day]) {
                                 const c = scheduleData[day].find(c => c.slot === s.id);
-                                if (c) nextSubject = '下节：' + c.sub;
+                                if (c) {
+                                    if (day === 6) {
+                                        const pA = parseCourse(c.subA);
+                                        const pB = parseCourse(c.subB);
+                                        nextSubject = `下节：\n[A] ${pA.name}\n[B] ${pB.name}`;
+                                    } else {
+                                        const parsed = parseCourse(c.sub);
+                                        nextSubject = '下节：' + parsed.name;
+                                    }
+                                }
                             }
                             break;
                         }
@@ -550,7 +645,7 @@
                 const curMin = now.getHours() * 60 + now.getMinutes();
                 const slots = getSlotsByDay(day);
 
-                if (isSleepingTime(curMin) || day === 6 || (day === 0 && !scheduleData[0])) {
+                if (isSleepingTime(curMin) || (day === 0 && !scheduleData[0])) {
                     els.bcLabel.innerText = '🌙 休息时间';
                     els.bcTime.innerText = '好 梦';
                     els.bcSub.innerText = '好好休息，明天见！';
@@ -582,9 +677,19 @@
                     let sub = target.name;
                     if (scheduleData[day]) {
                         const c = scheduleData[day].find(c => c.slot === target.id);
-                        if (c) sub = c.sub;
+                        if (c) {
+                            if (day === 6) {
+                                const pA = parseCourse(c.subA);
+                                const pB = parseCourse(c.subB);
+                                // 使用 \n 换行
+                                sub = `A课：${pA.name}　　B课：${pB.name}`;
+                            } else {
+                                const parsed = parseCourse(c.sub);
+                                sub = parsed.name;
+                            }
+                        }
                     }
-                    els.bcSub.innerText = `当前正在上：${sub}`;
+                    els.bcSub.innerText = `当前正在上：\n${sub}`;
                 } else {
                     let nextSlot = null;
                     for (let i = 0; i < slots.length; i++) {
@@ -613,7 +718,7 @@
                 const now = new Date();
                 const curMin = now.getHours() * 60 + now.getMinutes();
                 const day = now.getDay();
-                if (isSleepingTime(curMin) || day === 6 || (day === 0 && !scheduleData[0])) return;
+                if (isSleepingTime(curMin) || (day === 0 && !scheduleData[0])) return;
 
                 clockMode = !clockMode;
                 bigClockActive = clockMode;

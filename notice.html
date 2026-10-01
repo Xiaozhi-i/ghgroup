@@ -92,6 +92,149 @@
             font-family: 'FZShuSong', serif; font-size: 14px; color: #000;
             backdrop-filter: blur(10px); background: rgba(255,255,255,0.2);
         }
+                /* ========== 灯箱大图查看器【复制开始】 ========== */
+        body.lightbox-lock {
+            overflow-y: hidden;
+        }
+        .glass-btn-wrap {
+            position: absolute;
+        }
+        .close-btn {
+            position: relative; 
+            --w: 56px;
+            --h: 56px;
+            --r: 50%;
+            --glass-blur: 10px;
+            --bg-alpha: 0.22;
+            --highlight-1: 0.92;
+            --highlight-2: 0.55;
+            --inner-shadow-alpha:0.08;
+            --outer-shadow-alpha:0.18;
+            --icon-color:#000000;
+
+            border-radius: var(--r);
+            width: var(--w); 
+            height: var(--h);
+            flex-shrink: 0;
+            
+            background: rgba(255, 255, 255, var(--bg-alpha));
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+
+            border: 1px double rgba(51, 51, 51, 0.08);
+
+            box-shadow: 
+                inset 2px -2px 1px -1px rgba(255, 255, 255, var(--highlight-1)),
+                inset -2px 2px 1px -1px rgba(255, 255, 255, var(--highlight-1)),
+                inset 6px -6px 1px -6px rgba(255, 255, 255, var(--highlight-2)),
+                inset -6px 6px 1px -6px rgba(255, 255, 255, var(--highlight-2)),
+                inset 0 0 2px rgba(0, 0, 0, var(--inner-shadow-alpha)),
+                0 4px 8px rgba(0, 0, 0, var(--outer-shadow-alpha));
+
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            z-index: 10; 
+        }
+        .close-btn::before {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            width: calc(var(--w) - 16px);
+            height: calc(var(--h) - 16px);
+            border-radius: var(--r);
+            border:1px solid rgba(0,0,0,0.15);
+            filter: blur(4px);
+            pointer-events: none;
+            background: transparent;
+        }
+        .close-btn::after {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            width: calc(var(--w) - 9px);
+            height: calc(var(--h) - 9px);
+            border-radius: var(--r);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            filter: blur(1px);
+            pointer-events: none;
+            background: transparent;
+        }
+        .close-btn-wrap {
+            top: 40px; 
+            right: 30px; 
+            z-index: 1001;
+        }
+        .close-btn {
+            color: var(--icon-color); 
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .close-btn span {
+            display: inline-block;
+            transition: transform 0.35s ease;
+            z-index:3;
+            position:relative;
+        }
+        .close-btn:hover span {
+            transform: rotate(90deg);
+        }
+        /*灯箱本体*/
+        .lightbox {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            background: #000; 
+            z-index: 1000;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.32s ease;
+            overflow: hidden; 
+            touch-action: none;
+        }
+        .lightbox.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+        .lightbox-img-wrapper {
+            position: relative; 
+            width: 100%; 
+            height: 100%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .lightbox-img {
+            width: 100%; 
+            height: auto;
+            max-height: 100%;
+            object-fit: contain;
+            transform-origin: center center;
+            transition: none;
+            user-select: none; 
+            -webkit-user-drag: none;
+        }
+        /* 预览缩略图样式 */
+        .preview-img {
+            max-width: 420px;
+            width:100%;
+            border-radius:12px;
+            cursor: zoom-in;
+            margin-top:10px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+            transition:transform 0.25s ease;
+        }
+        .preview-img:hover {
+            transform: translateY(-3px);
+        }
+        /* ========== 灯箱大图查看器【复制结束】 ========== */
     </style>
 </head>
 <body>
@@ -106,26 +249,306 @@
     <main>
         <div class="glass-card">
             <div class="notice-item">
-                <div class="notice-date">None</div>
-                <div class="notice-title">测试</div>
-                <p class="notice-desc">测试。</p>
+                <div class="notice-date">2026.08.28 18:46</div>
+                <div class="notice-title">入学须知</div>
+                <p class="notice-desc">各位家长朋友。晚上好，以下为入学须知，请家长朋友指导学生认真阅读，严格执行，谢谢。🤝🤝<br>1. 报到时间：8月31日上午8:30—10:30，提醒孩子合理安排时间出行，准时到校。<br>2. 回归日常作息，引导孩子规律起居，合理管控电子产品使用，找回学习节奏。开学后将进行入学摸底检测。<br>3. 仪容仪表以干净清爽、简约大方为宜。男生提前修剪头发；女生不佩戴耳饰、项链等饰品、不带镜子梳子及化妆品进教室。校服校裤校牌，穿戴整齐。电子产品严禁进教室。<br>4. 提前备好红黑两色笔（红笔常备，方便日常作业订正与批注）、记号笔；带好文件夹收纳各科学习单。上学期个别同学桌面物品摆放较为杂乱，学习单经常丢失，新学期需养成整理收纳的良好习惯。<br>5. 本学期教室位于致远楼六楼275班。同学们带好各科作业以备检查。作业未完成的同学，请推迟返校，在家完成暑假作业再来报到。<br>新学期我们就是初三学子，直面明年六月份的中考，这是事关我们未来人生选择的考试，我们各任课老师将从严管理班级，从严教授知识。所有同学也要有严于律己，努力上进的决心。<br>如有疑问的家长朋友请及时与我联系。🤝🤝🤝</p>
             </div>
             <div class="notice-item">
-                <div class="notice-date">None</div>
-                <div class="notice-title">测试</div>
-                <p class="notice-desc">测试。</p>
+                <div class="notice-date">2026.8.28 20:35</div>
+                <div class="notice-title">寄宿生入住须知</div>
+                <p class="notice-desc">各位老师，大家好！<br>为了方便寄宿生入住，提高工作效率，生活部对寄学生入住安排及床位规格进行如下说明，敬请知悉！<br>①生活部安排床位首先是根据财务室来名单按年级班级编排，临时交费的都有床位，但可能要入住混合寝室。<br>②开学当天如财务室名单上没名字的寄宿生，必须拿首导所开票据“住宿联”交区域生活老师方可铺床（没名单的不能提前铺床，所带生活用品听从生活老师安排存放）<br>③因为学校铁床木床不是一次性购买，所以床的长度宽度略有不同，铁床木床规格如下：<br>小学部公寓：上下木床长180㎝宽83㎝（有20来张床宽86㎝）低龄学生床长140㎝宽80㎝，有少量长155㎝。<br>五栋公寓：铁床长190㎝宽100㎝（少量铁床：长200㎝宽90㎝）木床长190cm宽87㎝，6楼全部是木床，但前面房间各3张床长175㎝。二楼三楼前面寝室是本床。
+    <br>六栋公寓：铁床长200㎝宽100㎝（有少量床长190㎝）
+    <br>④为了寝室整洁美观，学校按批发价给寄宿生准备了（12件套）床上生活用品，凡入学新生（包括插班生）来校住宿的“必须购买”学校的床上生活用品。
+    <br>⑤本学期入住安排
+           <br><p align="center">高中部</p>
+高一年级：男生五栋公寓三、四单元3楼，女生六栋公寓3楼（床上用品到教师书吧领取）
+<br>高二年级：男生五栋公寓一单元2楼3楼。女生六栋公寓2楼。
+<br>高三年级：男生五栋公寓三、四单元2楼。女生六栋公寓1楼。
+           <br><p align="center">初中部</p>
+初一年级：男生小学部公寓5一6楼。女生五栋公寓6楼，二单元专用楼梯出入（特别提醒：初一男寄宿生床上用品到小学公寓1楼领取，女寄宿生到教师书吧领取）
+<br>初二年级：男生五栋公寓5楼。女生六栋公寓5楼6楼。
+<br>初三年级：男生五栋公寓4楼。女生六栋公寓4楼5楼。
+           <br><p align="center">小学部</p>
+四六年级男生住4楼，其他年级3楼。女生全部住2楼。
+
+<br>⑥开学前一天各寝室门口会张贴班级人数及名单。如有疑问请拨13874156166咨询解答。
+              <br><p align="right">生活部</p>
+           <p align="right">2026.8.16</p>
+     <br>生活用品配置如下
+<br>3斤盖絮1床，5斤盖絮1床，5斤垫絮1床，被套1床，床单1条，枕套1个，枕心1个，席子1床。脸盆1只，桶子1只，口杯1只，衣架5个。</p>
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">2026.8.31 09:29</div>
+                <div class="notice-title">入学报到流程</div>
+                <p class="notice-desc">温馨提醒：
+<br>今天31号入学报到流程如下↓
+<br>1.8:00—10:00班级报到
+<br>➡️交暑假作业、学生成长手册给组长统一上交
+<br>❇️报到后寄宿生去宿舍办理入住后尽快回教室
+<br>2.10:00-11:50在班级
+<br>✅10点教室集合
+<br>✅领教材发教材
+<br>3.中午12:30—13:40
+<br>回教室静校；
+<br>4.下午14:30—16:30
+<br>入学考试（数学）
+<br>5.18:10—20:10
+<br>暑假学习检测（语文）
+<br>6.20：10后
+<br>通学生回家/寄宿生回寝</p>
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">2026.8.31 18:39</div>
+                <div class="notice-title">早读时间通知</div>
+                <p class="notice-desc">明天英语7:30早读，告知学生7:30之前到教室。各首导明天早上督促好卫生和学生初三时间意识，明天下午正常上课。</p>
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">2026.9.5 10:08</div>
+                <div class="notice-title">e卷通个性化考试报告订购通知</div>
+                <p class="notice-desc">尊敬的家长：
+       <br>您好！初三即将进行入学检测。本次考试是按照中考的要求进行线上阅卷，现大数据阅卷平台可以根据每次考试后提供个性化考试分析报告等相关服务：
+<br>1.考试完成后，家长可在手机上查看孩子检测答题情况。
+<br>2.充分发挥阶段诊断、巩固、学情分析等功能，减轻学生无效做题负担30%以上；
+<br>3.真正做到个性化，针对错题分层推送相关练习；
+<br>4.打印纸质档整理装订成册，直接发到孩子手里，方便孩子落实。
+<br>家长可扫二维码进行了解详情，我们将在校考试的入学检测、第一学月、期中、第三学月的考试后进行制作考试分析报告并提供纸质档打印装订给孩子手里，期末考试放假提供电子档，具体科目如下表。订购的家长请准确填写相关信息，如有问题可随时咨询胡老师：13288691119</p>
+<img class="preview-img" data-fullsrc="notice/1.png" src="notice/1.png" alt="考试报告">
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">2026.9.5 15:24</div>
+                <div class="notice-title">免责声明</div>
+                <p class="notice-desc">老师们在群里发的作业情况无意针对或批评哪位同学，只是及时发布在校作业情况，让家长朋友及时了解孩子在校学习情况，并拜请家长朋友及时帮助和督促孩子学习，做到周周清。若在意的家长请私了我并特殊处理。</p>
+            </div>
+            <div class="notice-item">
+                <div class="notice-date">2026.8.31 18:39</div>
+                <div class="notice-title">送餐注意事项</div>
+                <p class="notice-desc">1. 家长送餐时，请标注好学生的年级、班级及姓名，避免餐食错拿。
+<br>2. 餐食请整齐摆放到指定餐桌或置物架上。
+<br>3. 送餐时间：中餐11:00‑11:40，晚餐16:30‑17:00。送餐完毕请有序离开，无需等候学生，不进行现场交接，请勿在送餐区域停留逗留。
+<br>4. 仅限配送家庭自制餐食，严禁外卖送餐。
+<br>5. 请自觉保持送餐区域环境卫生。
+<br>尤其强调仅限送家庭自制餐食，严禁外卖送餐。</p>
             </div>
         </div>
     </main>
     
-    <footer>千问提供技术支持 &copy; 2026 孤鸿组</footer>
+        <div class="lightbox" id="lightbox">
+        <div class="glass-btn-wrap close-btn-wrap">
+            <div class="close-btn" id="closeBtn">
+                <span>×</span>
+            </div>
+        </div>
+        <div class="lightbox-img-wrapper" id="imgWrapper">
+            <img src="" class="lightbox-img" id="fullImg">
+        </div>
+    </div>
+    
+    <footer>&copy; 2026 孤鸿组</footer>
 
-    <!-- 仅保留顶栏滚动模糊的极简脚本，已彻底删除字体替换逻辑 -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            //顶栏滚动效果（原有逻辑保留）
             const header = document.querySelector('header');
             window.addEventListener('scroll', () => {
                 header.classList.toggle('scrolled', window.scrollY > 20);
+            });
+
+            //====灯箱代码====
+            const lightbox = document.getElementById('lightbox');
+            const fullImg = document.getElementById('fullImg');
+            const closeBtn = document.getElementById('closeBtn');
+            const imgWrapper = document.getElementById('imgWrapper');
+            const previewImages = document.querySelectorAll('.preview-img');
+
+            let scale = 1;
+            let panning = false;
+            let pointX = 0, pointY = 0, startX = 0, startY = 0;
+            const THROTTLE_MS = 100;
+            let lastSampleTs = 0;
+            const INTERP_DURATION = 260;
+
+            let btnState = {
+                blur: 9,
+                alpha: 0.22,
+                h1: 0.92,
+                h2: 0.55,
+                inner: 0.08,
+                outer: 0.18,
+                icon: "#ffffff"
+            };
+            let currentTargetKey = null;
+            let animFrameId = null;
+            let debounceTimer = null;
+
+            //绑定所有预览图片点击事件
+            previewImages.forEach(el=>{
+                el.addEventListener('click',()=>{
+                    const fullSrc = el.getAttribute('data-fullsrc');
+                    fullImg.src = fullSrc;
+                    document.body.classList.add('lightbox-lock');
+                    lightbox.classList.add('active');
+                    resetZoomSmooth();
+                    updateCloseBtnStyle(true);
+                })
+            })
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                setTimeout(()=>{
+                    document.body.classList.remove('lightbox-lock');
+                    resetZoomSmooth();
+                },320);
+            }
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === imgWrapper) closeLightbox();
+            });
+            closeBtn.addEventListener('click', closeLightbox);
+
+            function resetZoomSmooth() {
+                scale = 1;
+                pointX = 0;
+                pointY = 0;
+                updateTransform();
+                setTimeout(() => {
+                    updateCloseBtnStyle(true);
+                }, 320);
+            }
+
+            function getInsideImgParam() {
+                return {
+                    blur: 12,
+                    alpha: 0.10,
+                    h1: 0.42,
+                    h2: 0.12,
+                    inner: 0.28,
+                    outer: 0.30,
+                    icon: "#000000",
+                    key:"inside"
+                };
+            }
+            function getOutsideImgParam() {
+                return {
+                    blur: 6,
+                    alpha: 0.16,
+                    h1: 0.95,
+                    h2: 0.62,
+                    inner: 0.04,
+                    outer: 0.12,
+                    icon: "#ffffff",
+                    key:"outside"
+                };
+            }
+            function syncDomFromState(btnEl) {
+                btnEl.style.setProperty('--glass-blur', btnState.blur.toFixed(1) + 'px');
+                btnEl.style.setProperty('--bg-alpha', btnState.alpha.toFixed(3));
+                btnEl.style.setProperty('--highlight-1', btnState.h1.toFixed(3));
+                btnEl.style.setProperty('--highlight-2', btnState.h2.toFixed(3));
+                btnEl.style.setProperty('--inner-shadow-alpha', btnState.inner.toFixed(3));
+                btnEl.style.setProperty('--outer-shadow-alpha', btnState.outer.toFixed(3));
+                btnEl.style.setProperty('--icon-color', btnState.icon);
+            }
+            function animateButton(target, btnEl) {
+                if(currentTargetKey === target.key) return;
+                if(animFrameId !== null){
+                    cancelAnimationFrame(animFrameId);
+                    animFrameId = null;
+                    syncDomFromState(btnEl);
+                }
+                currentTargetKey = target.key;
+                const start = { ...btnState };
+                const startTs = performance.now();
+                function tick() {
+                    const elapsed = performance.now() - startTs;
+                    const t = Math.min(elapsed / INTERP_DURATION, 1.0);
+                    const easeT = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                    btnState.blur = start.blur + (target.blur - start.blur) * easeT;
+                    btnState.alpha = start.alpha + (target.alpha - start.alpha) * easeT;
+                    btnState.h1 = start.h1 + (target.h1 - start.h1) * easeT;
+                    btnState.h2 = start.h2 + (target.h2 - start.h2) * easeT;
+                    btnState.inner = start.inner + (target.inner - start.inner) * easeT;
+                    btnState.outer = start.outer + (target.outer - start.outer) * easeT;
+                    btnState.icon = target.icon;
+                    syncDomFromState(btnEl);
+                    if (t < 1) {
+                        animFrameId = requestAnimationFrame(tick);
+                    }else{
+                        animFrameId = null;
+                    }
+                }
+                tick();
+            }
+            function updateCloseBtnStyle(force = false) {
+                if (!lightbox.classList.contains('active')) return;
+                const now = performance.now();
+                if (!force && (now - lastSampleTs < THROTTLE_MS)) return;
+                lastSampleTs = now;
+                const btnRect = closeBtn.getBoundingClientRect();
+                const imgRect = fullImg.getBoundingClientRect();
+                const cx = btnRect.left + btnRect.width / 2;
+                const cy = btnRect.top + btnRect.height / 2;
+                const isInsideImg = (
+                    cx >= imgRect.left &&
+                    cx <= imgRect.right &&
+                    cy >= imgRect.top &&
+                    cy <= imgRect.bottom
+                );
+                if (isInsideImg) {
+                    animateButton(getInsideImgParam(), closeBtn);
+                } else {
+                    animateButton(getOutsideImgParam(), closeBtn);
+                }
+            }
+            function triggerDebounceCheck() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(()=>{
+                    updateCloseBtnStyle(true);
+                }, 40);
+            }
+            function updateTransform() {
+                fullImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+                updateCloseBtnStyle();
+            }
+            let initialDistance = 0;
+            let initialScale = 1;
+            fullImg.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2) {
+                    initialDistance = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                    initialScale = scale;
+                    e.preventDefault();
+                } else if (e.touches.length === 1 && scale > 1) {
+                    panning = true;
+                    startX = e.touches[0].clientX - pointX;
+                    startY = e.touches[0].clientY - pointY;
+                }
+            }, { passive: false });
+            fullImg.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 2) {
+                    const currentDistance = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                    scale = initialScale * (currentDistance / initialDistance);
+                    updateTransform();
+                    e.preventDefault();
+                } else if (panning && scale > 1) {
+                    pointX = e.touches[0].clientX - startX;
+                    pointY = e.touches[0].clientY - startY;
+                    updateTransform();
+                }
+            }, { passive: false });
+            fullImg.addEventListener('touchend', () => {
+                panning = false;
+                triggerDebounceCheck();
+            });
+            fullImg.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                scale *= delta;
+                updateTransform();
+                triggerDebounceCheck();
             });
         });
     </script>
