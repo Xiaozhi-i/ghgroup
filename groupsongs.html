@@ -184,18 +184,23 @@
             font-size: 17px;
             line-height: 1.8;
             color: #222;
-            transition: font-size 0.2s, transform 0.2s, box-shadow 0.2s;
-            cursor: default;
+            transition: font-size 0.2s, transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            cursor: pointer; /* 🛠️ 修改：改为手型光标，提示可点击 */
             border-radius: 8px;
             width: 100%;
             box-sizing: border-box;
         }
 
-        /* 🛠️ 修复：纯色高亮，去除卡啦OK逐字渐变 */
+        /* 🛠️ 新增：鼠标悬停时的微弱反馈 */
+        .lyric-line:hover {
+            background-color: rgba(22, 55, 93, 0.05);
+        }
+
+        /* 纯色高亮，去除卡啦OK逐字渐变 */
         .lyric-line.active {
             font-size: 19px;
             font-weight: bold;
-            color: #16375D; /* 直接使用纯蓝色 */
+            color: #16375D; 
             background-color: rgba(255, 255, 255, 0.4);
             transform: scale(1.02);
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -243,7 +248,7 @@
 <footer>哔哩哔哩UP主圆子软糖At、千问提供技术支持 &copy; 2026 孤鸿组</footer>
 
 <script>
-    // 1. 歌词数据解析 (替换为你提供的完整带元数据歌词)
+    // 1. 歌词数据解析
     const rawLyrics = `
 [00:00.00] 作词 : 白居易
 [00:00.84] 作曲 : 徒有琴
@@ -324,7 +329,6 @@
                 const ms = parseInt(match[3].length === 2 ? match[3] + '0' : match[3]);
                 const time = min * 60 + sec + ms / 1000;
                 const content = line.replace(timeRegex, '').trim();
-                // 过滤掉纯空行，但保留歌手标注/念白
                 if(content) {
                     result.push({ time, content });
                 }
@@ -338,12 +342,49 @@
     const audio = document.getElementById('audioPlayer');
     const playBtn = document.getElementById('playBtn');
 
-    // 2. 渲染歌词到DOM
+    // 🛠️ 新增：用于处理用户滑动干扰自动定位的状态变量
+    let isUserScrolling = false;          // 用户是否正在主动滑动
+    let isProgrammaticScroll = false;     // 是否是代码触发的滚动
+    let userScrollTimeout = null;         // 用户停止滑动后的恢复计时器
+    let programmaticScrollTimeout = null; // 代码滚动的状态重置计时器
+
+    // 🛠️ 新增：监听歌词区域的滑动，判断用户是否正在主动浏览
+    lyricsBox.addEventListener('scroll', () => {
+        if (isProgrammaticScroll) return; // 如果是代码触发的滚动，不作数
+        
+        isUserScrolling = true;
+        clearTimeout(userScrollTimeout);
+        
+        // 用户停止滑动 3 秒后，重新允许歌词自动定位
+        userScrollTimeout = setTimeout(() => {
+            isUserScrolling = false;
+        }, 3000);
+    });
+
+    // 2. 渲染歌词到DOM，并绑定点击跳转事件
     lyricsData.forEach((line, index) => {
         const div = document.createElement('div');
         div.className = 'lyric-line';
         div.dataset.index = index;
         div.textContent = line.content; 
+        
+        // 为每一句歌词添加点击事件
+        div.addEventListener('click', () => {
+            // 🛠️ 新增：用户点击歌词跳转时，重置用户滑动状态，让自动居中重新生效
+            isUserScrolling = false;
+            clearTimeout(userScrollTimeout);
+
+            // 1. 将音频进度跳转到该歌词的时间点
+            audio.currentTime = line.time;
+            
+            // 2. 如果当前是暂停状态，点击歌词后自动播放
+            if (audio.paused) {
+                audio.play().catch(e => console.log("播放失败，请检查音频文件或交互状态:", e));
+                playBtn.classList.add('playing');
+                isPlaying = true;
+            }
+        });
+        
         lyricsBox.appendChild(div);
     });
 
@@ -351,6 +392,10 @@
     let isPlaying = false;
 
     playBtn.addEventListener('click', () => {
+        // 🛠️ 新增：点击播放/暂停时，也重置用户滑动状态
+        isUserScrolling = false;
+        clearTimeout(userScrollTimeout);
+
         if (isPlaying) {
             audio.pause();
             playBtn.classList.remove('playing');
@@ -361,7 +406,7 @@
         isPlaying = !isPlaying;
     });
 
-    // 4. 🛠️ 歌词同步逻辑 (优化：去掉了渐变计算，变为纯粹的按句高亮，流畅性大幅提升)
+    // 4. 歌词同步逻辑
     audio.ontimeupdate = function() {
         const currentTime = audio.currentTime;
         
@@ -382,14 +427,26 @@
                 if (prevLineEl) prevLineEl.classList.remove('active');
                 currentLineEl.classList.add('active');
 
-                const containerHeight = lyricsBox.clientHeight;
-                const lineTop = currentLineEl.offsetTop;
-                const lineHeight = currentLineEl.offsetHeight;
-                
-                lyricsBox.scrollTo({
-                    top: lineTop - containerHeight / 2 + lineHeight / 2,
-                    behavior: 'smooth'
-                });
+                // 🛠️ 核心修改：只有当用户没有主动滑动时，才执行自动居中定位
+                if (!isUserScrolling) {
+                    const containerHeight = lyricsBox.clientHeight;
+                    const lineTop = currentLineEl.offsetTop;
+                    const lineHeight = currentLineEl.offsetHeight;
+                    
+                    // 标记为程序化滚动，避免触发 scroll 事件导致状态误判
+                    isProgrammaticScroll = true;
+                    
+                    lyricsBox.scrollTo({
+                        top: lineTop - containerHeight / 2 + lineHeight / 2,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 延迟解除标记，给平滑滚动留出完成时间
+                    clearTimeout(programmaticScrollTimeout);
+                    programmaticScrollTimeout = setTimeout(() => {
+                        isProgrammaticScroll = false;
+                    }, 800); 
+                }
             }
         }
     };
