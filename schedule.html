@@ -48,7 +48,7 @@
 
         /* 4. 内容区防遮挡 */
         main { 
-            padding: 100px 20px 40px; /* 移除提示后，顶部间距稍微减小 */
+            padding: 100px 20px 40px;
             max-width: 900px; 
             margin: auto; 
         }
@@ -108,14 +108,13 @@
 
         .status-time { font-family: 'FZHei', sans-serif; font-size: 15px; color: #16375D; opacity: 0.7; margin-bottom: 5px; }
         
-        /* 关键修复：增加 white-space: pre-line 使 \n 生效 */
         .status-title { 
             font-family: 'MengyuanSong', serif; 
             font-size: 30px; 
             color: #16375D; 
             margin-bottom: 10px; 
             transition: color 0.3s;
-            white-space: pre-line; /* 允许换行 */
+            white-space: pre-line;
             line-height: 1.4;
         }
         .status-teacher { 
@@ -124,7 +123,7 @@
             color: #444; 
             margin-bottom: 15px; 
             min-height: 20px;
-            white-space: pre-line; /* 允许换行 */
+            white-space: pre-line;
             line-height: 1.5;
         }
         
@@ -225,7 +224,6 @@
         .big-clock-label { font-family: 'FZHei', sans-serif; font-size: 18px; color: #16375D; opacity: 0.8; margin-bottom: 5px; }
         .big-clock-time { font-family: 'XITS', serif; font-weight: bold; font-size: 60px; color: #16375D; letter-spacing: 2px; line-height: 1.1; font-variant-numeric: tabular-nums; text-align: center; }
         
-        /* 关键修复：增加 white-space: pre-line 使大时钟副标题换行生效 */
         .big-clock-sub { 
             font-family: 'FZShuSong', serif; 
             font-size: 16px; 
@@ -249,8 +247,6 @@
     </header>
     
     <main>
-        <!-- 提示已删除 -->
-
         <!-- 卡片1：智能仪表盘 -->
         <div class="glass-card status-card" id="card1">
             <div id="s-content-wrapper">
@@ -359,31 +355,23 @@
                 { id:'e3', name:'晚自习(3)', start:'19:40', end:'20:20' }
             ];
 
-            const saturdaySlots = [
-                { id:'morning', name:'早读', start:'07:30', end:'08:05' }, 
+            // 新增：周末作息表，对应图片右侧时间
+            const weekendSlots = [
+                { id:'morning', name:'早读', start:'07:30', end:'08:05' },
                 { id:'c1', name:'第一节', start:'08:10', end:'08:50' },
                 { id:'c2', name:'第二节', start:'09:00', end:'09:40' },
                 { id:'big_break', name:'大课间', start:'09:40', end:'10:10' },
                 { id:'c3', name:'第三节', start:'10:10', end:'10:50' },
                 { id:'c4', name:'第四节', start:'11:00', end:'11:40' },
-                { id:'c5', name:'第五节', start:'13:50', end:'14:30' },
-                { id:'c6', name:'第六节', start:'14:40', end:'15:20' },
-                { id:'c7', name:'第七节', start:'15:30', end:'16:10' },
-                { id:'activity', name:'第八节', start:'16:20', end:'17:00' },
-                { id:'dinner', name:'晚餐', start:'17:00', end:'18:00' },
+                { id:'c5', name:'第五节', start:'13:00', end:'13:40' },
+                { id:'c6', name:'第六节', start:'13:50', end:'14:30' },
+                { id:'c7', name:'第七节', start:'14:40', end:'15:30' },
+                { id:'activity', name:'第八节', start:'15:40', end:'16:10' },
+                { id:'dinner', name:'晚餐', start:'16:40', end:'17:50' },
                 { id:'e1', name:'晚自习(1)', start:'18:00', end:'18:40' },
                 { id:'e2', name:'晚自习(2)', start:'18:50', end:'19:30' },
-                { id:'e3', name:'晚自习(3)', start:'19:40', end:'20:20' }
-            ];
-
-            const sundaySlots = [
-                { id:'c1', name:'第一节', start:'08:10', end:'08:50' },
-                { id:'c2', name:'第二节', start:'09:00', end:'09:40' },
-                { id:'big_break', name:'大课间', start:'09:40', end:'10:10' },
-                { id:'c3', name:'第三节', start:'10:10', end:'10:50' },
-                { id:'e1', name:'晚自习(1)', start:'18:00', end:'18:40' },
-                { id:'e2', name:'晚自习(2)', start:'18:50', end:'19:30' },
-                { id:'e3', name:'晚自习(3)', start:'19:40', end:'20:20' }
+                { id:'e3', name:'晚自习(3)', start:'19:40', end:'20:20' },
+                { id:'e4', name:'晚自习(4)', start:'20:30', end:'21:00' }
             ];
 
             const teacherMap = {
@@ -405,10 +393,10 @@
                 0: [ { slot:'c1', sub:'自习' }, { slot:'c2', sub:'自习' }, { slot:'c3', sub:'自习' }, { slot:'e1', sub:'英语' }, { slot:'e2', sub:'语文' }, { slot:'e3', sub:'清艳' } ]
             };
 
+            // 修改：周末（周六、周日）使用右侧时间表
             const getSlotsByDay = (day) => {
-                if (day === 6) return saturdaySlots;
+                if (day === 6 || day === 0) return weekendSlots;
                 if (day === 5) return fridaySlots;
-                if (day === 0) return sundaySlots;
                 return normalSlots;
             };
 
@@ -457,9 +445,10 @@
                 let html = '';
                 const daySlots = [1, 2, 3, 4, 5, 6, 0];
                 const currentDay = new Date().getDay();
-                const allSlotIds = ['morning', 'c1', 'c2', 'big_break', 'c3', 'c4', 'c5', 'c6', 'c7', 'activity', 'dinner', 'e1', 'e2', 'e3'];
+                const allSlotIds = ['morning', 'c1', 'c2', 'big_break', 'c3', 'c4', 'c5', 'c6', 'c7', 'activity', 'dinner', 'e1', 'e2', 'e3', 'e4'];
 
                 allSlotIds.forEach(sid => {
+                    // 如果周日没有这些课，则不渲染对应的行
                     if (currentDay === 0 && !['c1', 'c2', 'c3', 'e1', 'e2', 'e3'].includes(sid)) return;
 
                     let rowData = [];
@@ -470,8 +459,11 @@
                         if (scheduleData[day]) {
                             const found = scheduleData[day].find(c => c.slot === sid);
                             if (found) {
+                                // 统一AB课展示样式为 "课程A / 课程B"
                                 if (day === 6) {
-                                    sub = `${found.subA}(A)<br>${found.subB}(B)`;
+                                    const pA = parseCourse(found.subA);
+                                    const pB = parseCourse(found.subB);
+                                    sub = pA.name === pB.name ? pA.name : `${pA.name}/${pB.name}`;
                                 } else {
                                     sub = found.sub;
                                 }
@@ -533,7 +525,6 @@
             }
 
             function updateDOM(title, teacher, elapsedStr, remainStr, pct, showDetails, showProgress) {
-                // 改为 innerText，配合 CSS 的 white-space: pre-line; 实现完美换行
                 els.title.innerText = title;
                 els.teacher.innerText = teacher;
                 els.details.style.opacity = showDetails ? '1' : '0';
@@ -571,12 +562,18 @@
                         if (scheduleData[day]) {
                             const c = scheduleData[day].find(c => c.slot === s.id);
                             if (c) {
+                                // 修改：将AB课处理为和平常一致的样式，显示老师、已上/剩余时间
                                 if (day === 6) {
                                     const pA = parseCourse(c.subA);
                                     const pB = parseCourse(c.subB);
-                                    // 使用 \n 换行
-                                    subject = `A课：${pA.name}　　B课：${pB.name}`;
-                                    teacher = `A课：${pA.teacher || '无'}　　B课：${pB.teacher || '无'}`;
+                                    if (pA.name === pB.name) {
+                                        subject = pA.name;
+                                    } else {
+                                        subject = `${pA.name} / ${pB.name}`;
+                                    }
+                                    const tA = pA.teacher || '无';
+                                    const tB = pB.teacher || '无';
+                                    teacher = `授课教师：${tA} / ${tB}`;
                                     rawSubject = `A:${c.subA},B:${c.subB}`;
                                 } else {
                                     const parsed = parseCourse(c.sub);
@@ -610,10 +607,13 @@
                             if (scheduleData[day]) {
                                 const c = scheduleData[day].find(c => c.slot === s.id);
                                 if (c) {
+                                    // 修改：课间休息时的提示信息也统一AB课样式
                                     if (day === 6) {
                                         const pA = parseCourse(c.subA);
                                         const pB = parseCourse(c.subB);
-                                        nextSubject = `下节：\n[A] ${pA.name}\n[B] ${pB.name}`;
+                                        const nameA = pA.name;
+                                        const nameB = pB.name;
+                                        nextSubject = `下节：${nameA === nameB ? nameA : `${nameA} / ${nameB}`}`;
                                     } else {
                                         const parsed = parseCourse(c.sub);
                                         nextSubject = '下节：' + parsed.name;
@@ -678,11 +678,15 @@
                     if (scheduleData[day]) {
                         const c = scheduleData[day].find(c => c.slot === target.id);
                         if (c) {
+                            // 修改：大时钟下方课程显示同步统一AB课样式
                             if (day === 6) {
                                 const pA = parseCourse(c.subA);
                                 const pB = parseCourse(c.subB);
-                                // 使用 \n 换行
-                                sub = `A课：${pA.name}　　B课：${pB.name}`;
+                                if (pA.name === pB.name) {
+                                    sub = pA.name;
+                                } else {
+                                    sub = `${pA.name} / ${pB.name}`;
+                                }
                             } else {
                                 const parsed = parseCourse(c.sub);
                                 sub = parsed.name;
